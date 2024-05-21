@@ -2936,10 +2936,13 @@ if ($action == 'create' && $usercancreate) {
 				}
 
 				// Valid
-				if ($object->statut == Commande::STATUS_DRAFT && ($object->total_ttc >= 0 || getDolGlobalString('ORDER_ENABLE_NEGATIVE')) && $usercanvalidate) {
+				if ($object->statut == Commande::STATUS_DRAFT && ($object->total_ttc >= 0 || getDolGlobalString('ORDER_ENABLE_NEGATIVE')) && $usercanvalidate  ($soc->outstanding_limit >= $arrayoutstandingbills['opened'] ||  $object->cond_reglement_id == 1 )) {
 					if ($numlines > 0) {
 						print dolGetButtonAction('', $langs->trans('Validate'), 'default', $_SERVER["PHP_SELF"].'?action=validate&amp;token='.newToken().'&amp;id='.$object->id, $object->id, 1);
 					} else {
+						 if($soc->outstanding_limit < $arrayoutstandingbills['opened'] && $object->cond_reglement_id != 1){
+							echo('<h1>Este pedido no se puede validar porque el cliente ha excedido su límite de crédito, ejecute cobranza</h1>');
+						 }
 						print dolGetButtonAction($langs->trans("ErrorObjectMustHaveLinesToBeValidated", $object->ref), $langs->trans('Validate'), 'default', $_SERVER["PHP_SELF"].'?action=validate&amp;token='.newToken().'&amp;id='.$object->id, $object->id, 0);
 					}
 				}
