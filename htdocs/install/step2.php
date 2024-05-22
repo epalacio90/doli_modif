@@ -214,6 +214,7 @@ if ($action == "set") {
 				if ($dolibarr_main_db_prefix != 'llx_') {
 					$buffer = preg_replace('/llx_/i', $dolibarr_main_db_prefix, $buffer);
 				}
+                               $db->query('SET SESSION sql_require_primary_key = 0;');
 
 				//print "<tr><td>Creation of table $name/td>";
 				$requestnb++;
